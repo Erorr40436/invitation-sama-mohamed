@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>دعوة خطوبة محمد وسما الملكية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&family=Cairo:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --burgundy: #6b1d2f;
+            --burgundy-dark: #4a101e;
+            --secondary-rose: #b8435d;
+            --gold: #d4af37;
+            --parchment: linear-gradient(135deg, #fdf8f0 0%, #f4ebd9 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3ece3;
+        }
+
+        .viewport-stage {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: #f2ebd9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* دانتيل ملكي فاخر ومطرز بالـ SVG في زاوية الشاشة الخارجية */
+        .lace-corner-svg {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 180px;
+            height: 180px;
+            color: var(--burgundy);
+            opacity: 0.25;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* حاوية المغلف الرئيسي */
+        .envelope-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 34 / 23;
+            background: var(--burgundy-dark);
+            box-shadow: 0 30px 65px rgba(0,0,0,0.55);
+            border-radius: 4px 4px 12px 12px;
+            perspective: 2000px;
+            z-index: 2;
+        }
+
+        .iphone-touch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            cursor: pointer;
+            background: rgba(0,0,0,0);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 62%;
+            background: var(--burgundy);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 4;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            background: var(--burgundy-dark);
+            clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 38%, 0 0);
+            z-index: 3;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .wax-seal-box {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -35%) scale(1);
+            z-index: 5;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .wax-rose-seal {
+            width: 76px;
+            height: 76px;
+            background: radial-gradient(circle, #bc5d6e 0%, #8c2641 70%, #5c1223 100%);
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 3px 5px rgba(255,255,255,0.3);
+            border: 2px solid #6b172a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .wax-rose-seal::before { content: '🌸'; font-size: 20px; margin-bottom: -2px; }
+        .wax-rose-seal::after { content: 'Click Here'; font-size: 9px; color: rgba(255,255,255,0.85); font-family: sans-serif; font-weight: bold; }
+
+        .seal-arrow { position: absolute; color: white; font-size: 20px; opacity: 0.8; pointer-events: none; animation: arrowPulse 1.2s infinite ease-in-out; }
+        .arrow-1 { top: -15px; left: -15px; transform: rotate(45deg); }
+        .arrow-2 { bottom: -15px; right: -15px; transform: rotate(225deg); }
+
+        .canvas-title-top { margin-bottom: 25px; text-align: center; color: var(--burgundy); z-index: 3; }
+        .canvas-title-top h1 { font-family: 'Great Vibes', cursive; font-size: 36px; }
+        .canvas-title-top p { font-size: 14px; font-weight: bold; letter-spacing: 1px; }
+
+        /* رسمة الولد والبنت الخارجية */
+        .canvas-couple-vector-box {
+            position: absolute;
+            bottom: 20%;
+            left: 6%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            opacity: 0.85;
+        }
+        .canvas-couple-vector-box .text-label {
+            font-family: 'Great Vibes', cursive;
+            font-size: 22px;
+            color: var(--burgundy);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .external-countdown {
+            margin-top: 35px;
+            width: 100%;
+            max-width: 340px;
+            background: rgba(230, 225, 218, 0.85);
+            border: 1px solid rgba(107, 29, 47, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+            z-index: 3;
+        }
+        .countdown-unit { text-align: center; flex: 1; }
+        .countdown-val { font-size: 20px; font-weight: 700; color: var(--burgundy); }
+        .countdown-lbl { font-size: 11px; color: #555; }
+
+        .exclusive-hint-text {
+            margin-top: 25px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 26px;
+            text-align: center;
+            background: linear-gradient(to right, #6b1d2f 20%, #b8435d 40%, #b8435d 60%, #6b1d2f 80%);
+            background-size: 200% auto;
+            color: #6b1d2f;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineText 3s linear infinite;
+            z-index: 3;
+        }
+
+        /* === كارت الدعوة الداخلي === */
+        .wedding-card-scroller {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--parchment);
+            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 60px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.6s ease 0.4s;
+        }
+
+        /* شريط دانتيل علوي مائي */
+        .inner-lace-top-decor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            fill: var(--burgundy);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* فروع الورد الجانبية المائية */
+        .card-corner-roses {
+            position: absolute;
+            top: 15px;
+            width: 50px;
+            height: 50px;
+            fill: var(--burgundy);
+            opacity: 0.25;
+            pointer-events: none;
+        }
+        .rose-left { left: 15px; transform: scaleX(-1); }
+        .rose-right { right: 15px; }
+
+        .card-inner-content {
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* أنيميشن الصعود التفاعلي للداخل */
+        .viewport-stage.is-open .card-inner-content > * {
+            animation: slideUpFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+        .viewport-stage.is-open .card-inner-content > *:nth-child(1) { animation-delay: 0.4s; }
+        .viewport-stage.is-open .card-inner-content > *:nth-child(2) { animation-delay: 0.5s; }
+        .viewport-stage.is-open .card-inner-content > *:nth-child(3) { animation-delay: 0.6s; }
+        .viewport-stage.is-open .card-inner-content > *:nth-child(4) { animation-delay: 0.7s; }
+        .viewport-stage.is-open .card-inner-content > *:nth-child(5) { animation-delay: 0.8s; }
+
+        .top-monogram-logo { font-family: 'Great Vibes', cursive; font-size: 42px; color: var(--burgundy); position: absolute; top: -40px; left: 10px; opacity: 0.15; transform: rotate(-15deg); pointer-events: none; }
+        .canvas-floating-hearts { position: absolute; top: -35px; right: 10px; display: flex; gap: 5px; opacity: 0.4; pointer-events: none; }
+        .canvas-floating-hearts span { font-size: 20px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.1); }
+        .canvas-floating-hearts span:nth-child(2) { font-size: 14px; margin-top: -8px; transform: rotate(15deg); }
+
+        .floral-deco { font-size: 14px; color: var(--burgundy); letter-spacing: 6px; margin-bottom: 15px; opacity: 0.4; }
+        
+        .quran-section-3d {
+            font-family: 'Amiri', serif;
+            font-size: 17px;
+            color: #3b221d;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            background: #ffffff;
+            padding: 22px 18px;
+            border-radius: 16px;
+            border: 2px double var(--gold);
+            box-shadow: 0 15px 35px rgba(107, 29, 47, 0.08), 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .welcome-msg { font-family: 'Amiri', serif; font-size: 16px; color: #555; line-height: 1.6; margin-bottom: 20px; }
+        
+        /* شريط الورد النبيتي المدمج في المنتصف */
+        .rose-ribbon-divider {
+            width: 100%;
+            max-width: 260px;
+            height: 30px;
+            margin: 15px auto;
+            display: block;
+            fill: var(--burgundy);
+            opacity: 0.85;
+        }
+
+        /* الدبلتين الذهبيتين */
+        .wedding-rings-box {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 50px;
+            margin: 5px 0 15px 0;
+            position: relative;
+        }
+        .ring {
+            width: 34px;
+            height: 34px;
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12), inset 0 2px 4px rgba(255,255,255,0.5);
+            animation: ringGlowShine 2.5s infinite ease-in-out;
+        }
+        .ring-1 { left: 16px; z-index: 2; transform: rotate(-10deg); }
+        .ring-2 { right: 16px; transform: scale(0.9) rotate(15deg); z-index: 1; animation-delay: 0.4s; }
+
+        .couple-names { font-family: 'Amiri', serif; font-size: 40px; font-weight: bold; color: var(--burgundy); margin: 5px 0; }
+
+        .next-page-indicator { margin: 20px 0; color: var(--burgundy); font-size: 13px; font-style: italic; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; opacity: 0.7; }
+        .next-page-indicator .curved-arrow { font-size: 18px; display: inline-block; transform: rotate(90deg); animation: bounceArrow 1.2s infinite ease-in-out; }
+
+        .calendar-card {
+            background: #ffffff;
+            border: 1px solid #eadecc;
+            border-radius: 16px;
+            padding: 20px 16px;
+            width: 100%;
+            margin: 25px 0;
+            box-shadow: 0 8px 24px rgba(107, 29, 47, 0.03);
+            position: relative;
+        }
+
+        .canvas-cheers-decor { position: absolute; bottom: -35px; left: -15px; width: 70px; height: 70px; opacity: 0.8; pointer-events: none; display: flex; justify-content: center; align-items: center; }
+        .canvas-cheers-decor::before { content: '🥂'; font-size: 34px; }
+
+        .calendar-month-title { font-size: 17px; font-weight: bold; color: var(--burgundy); margin-bottom: 14px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; font-size: 13px; }
+        .calendar-day-head { font-weight: bold; color: #9a8884; }
+        .calendar-day-num { padding: 4px; color: #444; position: relative; z-index: 1; }
+        
+        .calendar-day-num.highlighted { color: var(--burgundy); font-weight: 700; }
+        .calendar-day-num.highlighted::before {
+            content: '❤️';
+            position: absolute;
+            font-size: 22px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -46%);
+            opacity: 0.25;
+            z-index: -1;
+            animation: heartbeat 1.4s infinite ease-in-out;
+        }
+
+        /* إضافة جرافيك الولد والبنت الداخلي المنسق بدقة لكسر البياض في نهاية الكارت */
+        .inner-couple-graphic-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px auto 15px auto;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+        .inner-couple-graphic-box .inner-std-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 26px;
+            color: var(--burgundy);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .details-container-box { display: flex; justify-content: space-between; width: 100%; margin: 25px 0; gap: 15px; }
+        .detail-card-item {
+            background: #ffffff;
+            border: 1px solid #eee4d6;
+            border-radius: 14px;
+            padding: 15px;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+        }
+        .detail-card-item i { font-size: 20px; color: var(--secondary-rose); margin-bottom: 6px; display: block; }
+        .detail-card-item h4 { font-size: 11px; color: #888; margin-bottom: 4px; }
+        .detail-card-item p { font-size: 15px; font-weight: bold; color: var(--burgundy); }
+
+        .location-btn {
+            display: block;
+            background: var(--burgundy);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 6px 16px rgba(107, 29, 47, 0.25);
+            text-decoration: none;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* شروط الفتح التتابعي */
+        .viewport-stage.is-open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+        .viewport-stage.is-open .wax-seal-box { transform: translate(-50%, -140%) scale(0); opacity: 0; pointer-events: none; }
+        .viewport-stage.is-open .canvas-title-top, 
+        .viewport-stage.is-open .external-countdown,
+        .viewport-stage.is-open .lace-corner-svg,
+        .viewport-stage.is-open .canvas-couple-vector-box,
+        .viewport-stage.is-open .exclusive-hint-text { opacity: 0; pointer-events: none; }
+        .viewport-stage.is-open .iphone-touch-overlay { display: none; }
+
+        .viewport-stage.is-open .wedding-card-scroller {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 20;
+        }
+
+        /* حركات الأنيميشن */
+        @keyframes arrowPulse {
+            0% { transform: translate(0, 0) rotate(var(--rot, 45deg)); opacity: 0.5; }
+            50% { transform: translate(4px, 4px) rotate(var(--rot, 45deg)); opacity: 1; }
+            100% { transform: translate(0, 0) rotate(var(--rot, 45deg)); opacity: 0.5; }
+        }
+        .arrow-1 { --rot: 45deg; }
+        .arrow-2 { --rot: 225deg; }
+
+        @keyframes shineText { 0% { background-position: 0% center; } 50% { background-position: 100% center; } 100% { background-position: 0% center; } }
+        
+        @keyframes ringGlowShine {
+            0% { border-color: var(--gold); filter: drop-shadow(0 0 2px rgba(212,175,55,0.3)); transform: rotate(-5deg); }
+            50% { border-color: #fff1b8; filter: drop-shadow(0 0 8px rgba(212,175,55,0.6)); transform: scale(1.03) rotate(5deg); }
+            100% { border-color: var(--gold); filter: drop-shadow(0 0 2px rgba(212,175,55,0.3)); transform: rotate(-5deg); }
+        }
+        
+        @keyframes heartbeat { 0% { transform: translate(-50%, -46%) scale(1); opacity: 0.25; } 50% { transform: translate(-50%, -46%) scale(1.2); opacity: 0.4; } 100% { transform: translate(-50%, -46%) scale(1); opacity: 0.25; } }
+        @keyframes bounceArrow { 0%, 100% { transform: translateY(0) rotate(90deg); } 50% { transform: translateY(5px) rotate(90deg); } }
+        
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viewport-stage" id="stage">
+        
+        <div class="iphone-touch-overlay" id="touchTrigger"></div>
+
+        <!-- الدانتيل المطرز الراقي الخارجي -->
+        <svg class="lace-corner-svg" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M100,0 C80,10 60,5 50,20 C40,35 45,55 30,70 C15,85 0,90 0,100 L100,100 Z" opacity="0.15"/>
+            <path d="M100,10 C85,18 70,15 62,28 C54,41 58,58 45,71 C32,84 15,88 0,100" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <circle cx="75" cy="45" r="3"/><circle cx="60" cy="60" r="3"/><circle cx="45" cy="75" r="3"/>
+        </svg>
+
+        <div class="canvas-title-top">
+            <h1>Engagement Party</h1>
+            <p>MOHAMMED & SAMA</p>
+        </div>
+
+        <div class="envelope-container">
+            <div class="envelope-flap"></div>
+            <div class="envelope-pocket"></div>
+            
+            <div class="wax-seal-box">
+                <div class="wax-rose-seal">
+                    <span class="seal-arrow arrow-1">➔</span>
+                    <span class="seal-arrow arrow-2">➔</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- رسمة الولد والبنت الخارجية الثابتة -->
+        <div class="canvas-couple-vector-box">
+            <div class="text-label">Save the Date!</div>
+            <svg width="55" height="45" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 52C16 43 20 37 23 31C21 28 20 24 21 20C22 16 26 15 27 18C28 15 32 16 33 20C34 24 32 28 30 31C33 37 37 43 37 52H16Z" fill="var(--burgundy)"/>
+                <circle cx="27" cy="13" r="3.5" fill="var(--burgundy)"/>
+                <path d="M12 37C14 35 18 37 19 41L14 45L12 37Z" fill="var(--secondary-rose)"/>
+                <path d="M42 52C42 44 45 36 47 31C45 28 44 24 45 20C46 16 50 15 51 18C52 15 56 16 57 20C58 24 56 28 54 31C56 36 59 44 59 52H42Z" fill="#2a2524"/>
+                <circle cx="51" cy="13" r="3.5" fill="#2a2524"/>
+            </svg>
+        </div>
+
+        <div class="external-countdown">
+            <div class="countdown-unit"><div class="countdown-val" id="sec">00</div><div class="countdown-lbl">ثانية</div></div>
+            <div class="countdown-unit"><div class="countdown-val" id="min">00</div><div class="countdown-lbl">دقيقة</div></div>
+            <div class="countdown-unit"><div class="countdown-val" id="hour">00</div><div class="countdown-lbl">ساعة</div></div>
+            <div class="countdown-unit"><div class="countdown-val" id="day">00</div><div class="countdown-lbl">يوم</div></div>
+        </div>
+
+        <div class="exclusive-hint-text">This invitation is exclusive for you 🤍</div>
+
+        <!-- كارت الدعوة التفاعلي الداخلي -->
+        <div class="wedding-card-scroller">
+            
+            <!-- شريط دانتيل علوي مائي -->
+            <svg class="inner-lace-top-decor" viewBox="0 0 100 20" preserveAspectRatio="none">
+                <path d="M0,0 Q5,10 10,0 T20,0 T30,0 T40,0 T50,0 T60,0 T70,0 T80,0 T90,0 T100,0 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+                <path d="M0,5 Q5,15 10,5 T20,5 T30,5 T40,5 T50,5 T60,5 T70,5 T80,5 T90,5 T100,5 Z" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2,2"/>
+            </svg>
+
+            <!-- فروع الورد الجانبية المائية -->
+            <svg class="card-corner-roses rose-left" viewBox="0 0 24 24">
+                <path d="M2,12 C4,10 7,11 9,9 C10,7 9,4 11,2 C12,4 11,7 13,9 C15,11 18,10 20,12 C18,14 15,13 13,15 C11,17 12,20 11,22 C9,20 10,17 9,15 C7,13 4,14 2,12 Z M9,9 C8,7 6,8 5,6 C7,5 8,7 9,9 Z"/>
+            </svg>
+            <svg class="card-corner-roses rose-right" viewBox="0 0 24 24">
+                <path d="M2,12 C4,10 7,11 9,9 C10,7 9,4 11,2 C12,4 11,7 13,9 C15,11 18,10 20,12 C18,14 15,13 13,15 C11,17 12,20 11,22 C9,20 10,17 9,15 C7,13 4,14 2,12 Z M9,9 C8,7 6,8 5,6 C7,5 8,7 9,9 Z"/>
+            </svg>
+
+            <div class="card-inner-content">
+                
+                <div class="top-monogram-logo">S & M</div>
+                <div class="canvas-floating-hearts"><span>❤️</span><span>❤️</span></div>
+
+                <div class="floral-deco">✿  ❀  ✿</div>
+                
+                <div class="quran-section-3d">
+                    "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً"
+                </div>
+
+                <div class="welcome-msg">
+                    يسعدنا ويشرفنا دعوتكم لحضور حفل خطوبة... حضوركم يكتمل به فرحنا.. وعقبالكم جميعاً! ✨
+                </div>
+
+                <!-- شريط الورد النبيتي المدمج -->
+                <svg class="rose-ribbon-divider" viewBox="0 0 120 15">
+                    <circle cx="60" cy="7.5" r="3.5"/>
+                    <circle cx="56.5" cy="7.5" r="2"/> <circle cx="63.5" cy="7.5" r="2"/>
+                    <circle cx="60" cy="4" r="2"/> <circle cx="60" cy="11" r="2"/>
+                    <path d="M64,7.5 Q75,2 85,7.5 T105,7.5" fill="none" stroke="currentColor" stroke-width="1"/>
+                    <path d="M56,7.5 Q45,2 35,7.5 T15,7.5" fill="none" stroke="currentColor" stroke-width="1"/>
+                    <path d="M70,5 C72,2 75,4 73,6 Z M82,9 C84,11 87,9 85,7 Z"/>
+                    <path d="M50,5 C48,2 45,4 47,6 Z M38,9 C36,11 33,9 35,7 Z"/>
+                </svg>
+
+                <div class="wedding-rings-box">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                </div>
+
+                <div class="couple-names">محمد & سما</div>
+                <div class="floral-deco" style="margin-top: 5px;">❀ ❀ ❀</div>
+
+                <div class="next-page-indicator">
+                    <span>The next page has more details</span>
+                    <span class="curved-arrow">➔</span>
+                </div>
+
+                <div class="calendar-card">
+                    <div class="canvas-cheers-decor"></div>
+                    <div class="calendar-month-title">يوليو | July 2026</div>
+                    <div class="calendar-grid">
+                        <div class="calendar-day-head">M</div><div class="calendar-day-head">T</div><div class="calendar-day-head">W</div><div class="calendar-day-head">T</div><div class="calendar-day-head">F</div><div class="calendar-day-head">S</div><div class="calendar-day-head">S</div>
+                        <div></div><div></div>1<div>2</div><div>3</div><div>4</div><div>5</div>
+                        <div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div>
+                        <div>13</div><div>14</div><div>15</div><div>16</div><div class="calendar-day-num highlighted">17</div><div>18</div><div>19</div>
+                        <div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div>
+                        <div>27</div><div>28</div><div>29</div><div>30</div><div>31</div>
+                    </div>
+                </div>
+
+                <!-- إدراج جرافيك العروسين مع عبارة "Save the Date!" في قلب الدعوة من جوة بنسق الـ SVG الراقٍ -->
+                <div class="inner-couple-graphic-box">
+                    <div class="inner-std-title">SAVE the DATE!</div>
+                    <svg width="60" height="50" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 52C16 43 20 37 23 31C21 28 20 24 21 20C22 16 26 15 27 18C28 15 32 16 33 20C34 24 32 28 30 31C33 37 37 43 37 52H16Z" fill="var(--burgundy)"/>
+                        <circle cx="27" cy="13" r="3.5" fill="var(--burgundy)"/>
+                        <path d="M12 37C14 35 18 37 19 41L14 45L12 37Z" fill="var(--secondary-rose)"/>
+                        <path d="M42 52C42 44 45 36 47 31C45 28 44 24 45 20C46 16 50 15 51 18C52 15 56 16 57 20C58 24 56 28 54 31C56 36 59 44 59 52H42Z" fill="#2a2524"/>
+                        <circle cx="51" cy="13" r="3.5" fill="#2a2524"/>
+                    </svg>
+                </div>
+
+                <div class="details-container-box">
+                    <div class="detail-card-item">
+                        <i>🕒</i>
+                        <h4>الوقت | Time</h4>
+                        <p>7:00 مساءً</p>
+                    </div>
+                    <div class="detail-card-item">
+                        <i>📍</i>
+                        <h4>الموقع | Location</h4>
+                        <p>Madinaty | V79</p>
+                    </div>
+                </div>
+
+                <a href="https://maps.google.com" target="_blank" class="location-btn">
+                    📌 إضغط هنا للدخول للموقع على الخريطة
+                </a>
+
+                <div class="floral-deco" style="margin-bottom: 0; padding-top: 10px;">❀ دامت دياركم بالمسرات عامر ❀</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const stage = document.getElementById('stage');
+        const touchTrigger = document.getElementById('touchTrigger');
+        let opened = false;
+
+        function triggerOpen(e) {
+            if (!opened) {
+                stage.classList.add('is-open');
+                opened = true;
+            }
+        }
+
+        touchTrigger.addEventListener('click', triggerOpen);
+        touchTrigger.addEventListener('touchstart', triggerOpen, {passive: true});
+
+        const eventTime = new Date("July 17, 2026 19:00:00").getTime();
+        setInterval(function() {
+            const rightNow = new Date().getTime();
+            const gap = eventTime - rightNow;
+            document.getElementById("day").innerText = Math.floor(gap / (1000 * 60 * 60 * 24));
+            document.getElementById("hour").innerText = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("min").innerText = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("sec").innerText = Math.floor((gap % (1000 * 60)) / 1000);
+        }, 1000);
+    </script>
+</body>
+</html>
